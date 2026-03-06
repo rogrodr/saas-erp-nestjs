@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+model Empresa {
+  id        Int       @id @default(autoincrement())
+  nome      String
+  cnpj      String?
+  createdAt DateTime  @default(now())
+
+  usuarios  Usuario[]
+  clientes  Cliente[]
+  produtos  Produto[]
+  vendas    Venda[]
+}
+
+model Usuario {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String   @unique
+  senha      String
+  role       String   @default("funcionario")
+
+  empresaId  Int
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+}
+
+model Cliente {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  telefone   String?
+
+  empresaId  Int
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+}
+
+model Produto {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  preco      Float
+  estoque    Int
+
+  empresaId  Int
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+}
+
+model Venda {
+  id         Int      @id @default(autoincrement())
+  total      Float
+  createdAt  DateTime @default(now())
+
+  empresaId  Int
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+
+  itens      VendaItem[]
+}
+
+model VendaItem {
+  id        Int     @id @default(autoincrement())
+
+  vendaId   Int
+  produtoId Int
+
+  quantidade Int
+  preco      Float
+
+  venda    Venda   @relation(fields: [vendaId], references: [id])
+}

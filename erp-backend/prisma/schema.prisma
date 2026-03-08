@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,60 +8,88 @@ datasource db {
 }
 
 model Empresa {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   nome      String
   cnpj      String?
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
 
-  usuarios  Usuario[]
-  clientes  Cliente[]
-  produtos  Produto[]
-  vendas    Venda[]
+  usuarios        Usuario[]
+  clientes        Cliente[]
+  produtos        Produto[]
+  vendas          Venda[]
+  historicoPrecos HistoricoPreco[]
+  fornecedores    Fornecedor[]
+  compras         Compra[]
+  contasPagar     ContaPagar[]
+  contasReceber   ContaReceber[]
 }
 
 model Usuario {
-  id         Int      @id @default(autoincrement())
-  nome       String
-  email      String   @unique
-  senha      String
-  role       String   @default("funcionario")
+  id    Int    @id @default(autoincrement())
+  nome  String
+  email String @unique
+  senha String
+  role  String @default("funcionario")
 
-  empresaId  Int
-  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
 }
 
 model Cliente {
-  id         Int      @id @default(autoincrement())
-  nome       String
-  telefone   String?
+  id       Int     @id @default(autoincrement())
+  nome     String
+  telefone String?
 
-  empresaId  Int
-  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  vendas        Venda[]
+  contasReceber ContaReceber[]
 }
 
 model Produto {
-  id         Int      @id @default(autoincrement())
-  nome       String
-  preco      Float
-  estoque    Int
+  id      Int    @id @default(autoincrement())
+  nome    String
+  preco   Float
+  estoque Int
 
-  empresaId  Int
-  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  vendaItems      VendaItem[]
+  compraItems     CompraItem[]
+  historicoPrecos HistoricoPreco[]
+}
+
+model Fornecedor {
+  id       Int     @id @default(autoincrement())
+  nome     String
+  telefone String?
+
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  compras Compra[]
 }
 
 model Venda {
-  id         Int      @id @default(autoincrement())
-  total      Float
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  total     Float
+  createdAt DateTime @default(now())
 
-  empresaId  Int
-  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
 
-  itens      VendaItem[]
+  clienteId Int?
+  cliente   Cliente? @relation(fields: [clienteId], references: [id])
+
+  itens           VendaItem[]
+  contasReceber   ContaReceber[]
+  historicoPrecos HistoricoPreco[]
 }
 
 model VendaItem {
-  id        Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   vendaId   Int
   produtoId Int
@@ -75,5 +97,93 @@ model VendaItem {
   quantidade Int
   preco      Float
 
-  venda    Venda   @relation(fields: [vendaId], references: [id])
+  venda   Venda   @relation(fields: [vendaId], references: [id])
+  produto Produto @relation(fields: [produtoId], references: [id])
+}
+
+model Compra {
+  id        Int      @id @default(autoincrement())
+  total     Float
+  createdAt DateTime @default(now())
+
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  fornecedorId Int
+  fornecedor   Fornecedor @relation(fields: [fornecedorId], references: [id])
+
+  itens           CompraItem[]
+  historicoPrecos HistoricoPreco[]
+}
+
+model CompraItem {
+  id Int @id @default(autoincrement())
+
+  compraId  Int
+  produtoId Int
+
+  quantidade Int
+  preco      Float
+
+  compra  Compra  @relation(fields: [compraId], references: [id])
+  produto Produto @relation(fields: [produtoId], references: [id])
+}
+
+model ContaPagar {
+  id Int @id @default(autoincrement())
+
+  descricao  String
+  valor      Float
+  vencimento DateTime
+  pago       Boolean @default(false)
+
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+}
+
+model ContaReceber {
+  id Int @id @default(autoincrement())
+
+  descricao  String
+  valor      Float
+  vencimento DateTime
+  pago       Boolean @default(false)
+
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  clienteId Int?
+  cliente   Cliente? @relation(fields: [clienteId], references: [id])
+
+  vendaId Int?
+  venda   Venda? @relation(fields: [vendaId], references: [id])
+}
+
+// Registra o preço de cada produto a cada compra ou venda,
+// permitindo consultar qual fornecedor/venda tinha o menor preço em determinado período
+model HistoricoPreco {
+  id Int @id @default(autoincrement())
+
+  produtoId Int
+  produto   Produto @relation(fields: [produtoId], references: [id])
+
+  preco Float
+  tipo  TipoPreco
+
+  // Origem do registro — compraId preenchido se COMPRA, vendaId se VENDA
+  compraId Int?
+  compra   Compra? @relation(fields: [compraId], references: [id])
+
+  vendaId Int?
+  venda   Venda? @relation(fields: [vendaId], references: [id])
+
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+enum TipoPreco {
+  COMPRA
+  VENDA
 }

@@ -10,6 +10,11 @@ import { VendasModule } from './vendas/vendas.module'
 import { AuthModule } from './auth/auth.module'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './auth/jwt.guard'
+import { FornecedoresModule } from './fornecedores/fornecedores.module';
+import { ComprasModule } from './compras/compras.module';
+import { ContasPagarModule } from './contas-pagar/contas-pagar.module';
+import { ContasReceberModule } from './contas-receber/contas-receber.module';
+import { HistoricoPrecosModule } from './historico-precos/historico-precos.module';
 
 @Module({
   imports: [
@@ -20,6 +25,11 @@ import { JwtAuthGuard } from './auth/jwt.guard'
     ProdutosModule,
     VendasModule,
     AuthModule,
+    FornecedoresModule,
+    ComprasModule,
+    ContasPagarModule,
+    ContasReceberModule,
+    HistoricoPrecosModule,
   ],
   controllers: [AppController],
   providers: [

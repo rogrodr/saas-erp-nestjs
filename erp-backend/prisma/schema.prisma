@@ -38,7 +38,16 @@ model Usuario {
 model Cliente {
   id       Int     @id @default(autoincrement())
   nome     String
+  cpf      String? @unique
   telefone String?
+  email    String?
+
+  endereco String?
+  numero   String?
+  bairro   String?
+  cidade   String?
+  estado   String?
+  cep      String?
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -64,7 +73,16 @@ model Produto {
 model Fornecedor {
   id       Int     @id @default(autoincrement())
   nome     String
+  cnpj     String? @unique
   telefone String?
+  email    String?
+
+  endereco String?
+  numero   String?
+  bairro   String?
+  cidade   String?
+  estado   String?
+  cep      String?
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])

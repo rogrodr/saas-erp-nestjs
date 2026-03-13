@@ -1,19 +1,19 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FornecedoresService {
-
   constructor(private prisma: PrismaService) {}
 
-  listar() {
-    return this.prisma.fornecedor.findMany()
+  listar(empresaId: number) {
+    return this.prisma.fornecedor.findMany({
+      where: { empresaId },
+    });
   }
 
-  criar(data: any) {
+  criar(data: any, empresaId: number) {
     return this.prisma.fornecedor.create({
-      data
-    })
+      data: { ...data, empresaId },
+    });
   }
-
 }

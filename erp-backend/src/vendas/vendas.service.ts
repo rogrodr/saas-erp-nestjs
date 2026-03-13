@@ -1,54 +1,51 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class VendasService {
-
   constructor(private prisma: PrismaService) {}
 
-  listar() {
+  listar(empresaId: number) {
     return this.prisma.venda.findMany({
+      where: { empresaId },
       include: {
         cliente: true,
         itens: {
-          include: { produto: true }
-        }
-      }
-    })
+          include: { produto: true },
+        },
+      },
+    });
   }
 
-  async criar(data: any) {
+  async criar(data: any, empresaId: number) {
     const venda = await this.prisma.venda.create({
-      data,
-      include: { itens: true }
-    })
+      data: { ...data, empresaId },
+      include: { itens: true },
+    });
 
-    // Salva histórico de preço com referência à venda (para comparação futura)
     for (const item of venda.itens) {
       await this.prisma.historicoPreco.create({
         data: {
-          produtoId:  item.produtoId,
-          preco:      item.preco,
-          tipo:       'VENDA',
-          vendaId:    venda.id,    // ✅ rastreia a origem
-          empresaId:  venda.empresaId
-        }
-      })
+          produtoId: item.produtoId,
+          preco: item.preco,
+          tipo: 'VENDA',
+          vendaId: venda.id,
+          empresaId,
+        },
+      });
     }
 
-    // Gera conta a receber vinculada ao cliente e à venda
     await this.prisma.contaReceber.create({
       data: {
-        descricao:  `Venda #${venda.id}`,
-        valor:      venda.total,
+        descricao: `Venda #${venda.id}`,
+        valor: venda.total,
         vencimento: new Date(),
-        empresaId:  venda.empresaId,
-        clienteId:  venda.clienteId ?? null,  // ✅ vínculo com cliente
-        vendaId:    venda.id                  // ✅ vínculo com venda
-      }
-    })
+        empresaId,
+        clienteId: venda.clienteId ?? null,
+        vendaId: venda.id,
+      },
+    });
 
-    return venda
+    return venda;
   }
-
 }

@@ -1,21 +1,17 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common'
-import { JwtAuthGuard } from 'src/auth/jwt.guard'
-import { VendasService } from './vendas.service'
+import { Controller, Get, Post, Body, Req } from '@nestjs/common';
+import { VendasService } from './vendas.service';
 
-@UseGuards(JwtAuthGuard)
 @Controller('vendas')
 export class VendasController {
-
   constructor(private vendasService: VendasService) {}
 
   @Get()
-  listar() {
-    return this.vendasService.listar()
+  listar(@Req() req: any) {
+    return this.vendasService.listar(req.user.empresaId);
   }
 
   @Post()
-  criar(@Body() data: any) {
-    return this.vendasService.criar(data)
+  criar(@Body() data: any, @Req() req: any) {
+    return this.vendasService.criar(data, req.user.empresaId);
   }
-
 }

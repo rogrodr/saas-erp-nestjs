@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  
 }
 
 model Empresa {
@@ -25,11 +24,12 @@ model Empresa {
 }
 
 model Usuario {
-  id    Int    @id @default(autoincrement())
-  nome  String
-  email String @unique
-  senha String
-  role  String @default("funcionario")
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  role      String   @default("funcionario")
+  createdAt DateTime @default(now())
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -153,7 +153,7 @@ model ContaPagar {
   descricao  String
   valor      Float
   vencimento DateTime
-  pago       Boolean @default(false)
+  pago       Boolean  @default(false)
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -165,7 +165,7 @@ model ContaReceber {
   descricao  String
   valor      Float
   vencimento DateTime
-  pago       Boolean @default(false)
+  pago       Boolean  @default(false)
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -177,8 +177,6 @@ model ContaReceber {
   venda   Venda? @relation(fields: [vendaId], references: [id])
 }
 
-// Registra o preço de cada produto a cada compra ou venda,
-// permitindo consultar qual fornecedor/venda tinha o menor preço em determinado período
 model HistoricoPreco {
   id Int @id @default(autoincrement())
 
@@ -188,7 +186,6 @@ model HistoricoPreco {
   preco Float
   tipo  TipoPreco
 
-  // Origem do registro — compraId preenchido se COMPRA, vendaId se VENDA
   compraId Int?
   compra   Compra? @relation(fields: [compraId], references: [id])
 

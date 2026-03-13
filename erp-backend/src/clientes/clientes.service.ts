@@ -11,9 +11,9 @@ export class ClientesService {
     });
   }
 
-  create(data: any) {
+  create(data: any, empresaId: number) {
     return this.prisma.cliente.create({
-      data,
+      data: { ...data, empresaId },
     });
   }
 }

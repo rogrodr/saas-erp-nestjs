@@ -8,12 +8,19 @@ export class UsuariosService {
   findAll(empresaId: number) {
     return this.prisma.usuario.findMany({
       where: { empresaId },
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        empresaId: true,
+        // ✅ nunca retorna o hash da senha
+      },
     });
   }
 
-  create(data: any) {
+  create(data: any, empresaId: number) {
     return this.prisma.usuario.create({
-      data,
+      data: { ...data, empresaId },
     });
   }
 }

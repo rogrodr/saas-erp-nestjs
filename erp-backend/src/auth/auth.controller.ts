@@ -10,13 +10,19 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  async register(@Body() body: RegisterDto) {
+  register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
 
   @Public()
   @Post('login')
-  async login(@Body() body: LoginDto) {
+  login(@Body() body: LoginDto) {
     return this.authService.login(body);
+  }
+
+  @Public()
+  @Post('refresh')
+  refresh(@Body('refreshToken') refreshToken: string) {
+    return this.authService.refresh(refreshToken);
   }
 }

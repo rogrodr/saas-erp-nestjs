@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { PrismaModule } from './prisma/prisma.module'
-import { EmpresaModule } from './empresa/empresa.module'
-import { UsuariosModule } from './usuarios/usuarios.module'
-import { ClientesModule } from './clientes/clientes.module'
-import { ProdutosModule } from './produtos/produtos.module'
-import { VendasModule } from './vendas/vendas.module'
-import { AuthModule } from './auth/auth.module'
-import { APP_GUARD } from '@nestjs/core'
-import { JwtAuthGuard } from './auth/jwt.guard'
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { PrismaModule } from './prisma/prisma.module';
+import { EmpresaModule } from './empresa/empresa.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { ClientesModule } from './clientes/clientes.module';
+import { ProdutosModule } from './produtos/produtos.module';
+import { VendasModule } from './vendas/vendas.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt.guard';
+import { RolesGuard } from './common/roles.guard';
 import { FornecedoresModule } from './fornecedores/fornecedores.module';
 import { ComprasModule } from './compras/compras.module';
 import { ContasPagarModule } from './contas-pagar/contas-pagar.module';
@@ -34,10 +35,8 @@ import { HistoricoPrecosModule } from './historico-precos/historico-precos.modul
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard }, // ✅ roles aplicado globalmente após JWT
   ],
 })
 export class AppModule {}

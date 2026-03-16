@@ -1,6 +1,15 @@
+import { IsEmail, IsNotEmpty, IsNumber, MinLength } from 'class-validator';
+
 export class RegisterDto {
-  nome: string
-  email: string
-  senha: string
-  empresaId: number
+  @IsNotEmpty({ message: 'Nome é obrigatório' })
+  nome: string;
+
+  @IsEmail({}, { message: 'Email inválido' })
+  email: string;
+
+  @MinLength(6, { message: 'Senha deve ter no mínimo 6 caracteres' })
+  senha: string;
+
+  @IsNumber({}, { message: 'empresaId deve ser um número' })
+  empresaId: number;
 }

@@ -10,6 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { ProdutosService } from './produtos.service';
+import { CriarProdutoDto } from './dto/criar-produto.dto';
 import { Roles, Role } from '../common/roles.decorator';
 
 @Controller('produtos')

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Param } from '@nestjs/common';
 import { EstoqueService } from './estoque.service';
 import { CriarMovimentacaoDto } from './dto/criar-movimentacao.dto';
 
@@ -23,4 +23,5 @@ export class EstoqueController {
   @Get(':id')
   buscarPorId(@Param('id') id: string, @Req() req: any) {
     return this.estoqueService.buscarPorId(Number(id), req.user.empresaId);
+  }
 }

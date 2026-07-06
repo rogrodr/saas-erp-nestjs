@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { AtualizarEmpresaDto } from './dto/atualizar-empresa.dto';
 
 @Injectable()
 export class EmpresaService {
@@ -13,7 +14,7 @@ export class EmpresaService {
     return empresa;
   }
 
-  async atualizar(empresaId: number, data: any) {
+  async atualizar(empresaId: number, data: AtualizarEmpresaDto) {
     await this.minha(empresaId);
     return this.prisma.empresa.update({
       where: { id: empresaId },

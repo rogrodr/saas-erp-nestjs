@@ -23,8 +23,8 @@ export class AuditoriaService {
         acao,
         entidade,
         entidadeId,
-        dadosAnteriores: dadosAnteriores ? JSON.stringify(dadosAnteriores) : null,
-        dadosNovos: dadosNovos ? JSON.stringify(dadosNovos) : null,
+        dadosAnteriores: dadosAnteriores ? JSON.parse(JSON.stringify(dadosAnteriores)) : undefined,
+        dadosNovos: dadosNovos ? JSON.parse(JSON.stringify(dadosNovos)) : undefined,
       },
     });
   }

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CriarContaPagarDto } from './dto/criar-conta-pagar.dto';
 
 @Injectable()
 export class ContasPagarService {
@@ -11,8 +12,16 @@ export class ContasPagarService {
     });
   }
 
+  async criar(data: CriarContaPagarDto, empresaId: number) {
+    return this.prisma.contaPagar.create({
+      data: {
+        ...data,
+        empresaId,
+      },
+    });
+  }
+
   async pagar(id: number, empresaId: number) {
-    // ✅ valida que a conta pertence ao tenant antes de atualizar
     const conta = await this.prisma.contaPagar.findFirst({
       where: { id, empresaId },
     });

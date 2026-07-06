@@ -17,7 +17,7 @@ export class DashboardService {
       _sum: { total: true },
     });
 
-    const itensMaisVendidos = await this.prisma.itemVenda.groupBy({
+    const itensMaisVendidos = await this.prisma.vendaItem.groupBy({
       by: ['produtoId'],
       where: {
         venda: {

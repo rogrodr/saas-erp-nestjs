@@ -17,7 +17,25 @@ export class ProdutosService {
 
   async atualizar(id: number, data: any, empresaId: number) {
     await this.verificarTenant(id, empresaId);
-    return this.prisma.produto.update({ where: { id }, data });
+
+    const updateData = {
+      nome: data.nome,
+      preco: data.preco,
+      sku: data.sku,
+      categoria: data.categoria,
+      estoque: data.estoque,
+      estoqueMin: data.estoqueMin,
+      ativo: data.ativo,
+    };
+
+    const sanitizedData = Object.fromEntries(
+      Object.entries(updateData).filter(([, value]) => value !== undefined),
+    );
+
+    return this.prisma.produto.update({
+      where: { id },
+      data: sanitizedData,
+    });
   }
 
   async deletar(id: number, empresaId: number) {

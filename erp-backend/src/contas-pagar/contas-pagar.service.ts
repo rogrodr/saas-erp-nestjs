@@ -11,12 +11,6 @@ export class ContasPagarService {
     });
   }
 
-  criar(data: any, empresaId: number) {
-    return this.prisma.contaPagar.create({
-      data: { ...data, empresaId },
-    });
-  }
-
   async pagar(id: number, empresaId: number) {
     // ✅ valida que a conta pertence ao tenant antes de atualizar
     const conta = await this.prisma.contaPagar.findFirst({

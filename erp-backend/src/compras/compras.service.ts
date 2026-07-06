@@ -17,24 +17,4 @@ export class ComprasService {
     });
   }
 
-  async criar(data: any, empresaId: number) {
-    const compra = await this.prisma.compra.create({
-      data: { ...data, empresaId },
-      include: { itens: true },
-    });
-
-    for (const item of compra.itens) {
-      await this.prisma.historicoPreco.create({
-        data: {
-          produtoId: item.produtoId,
-          preco: item.preco,
-          tipo: 'COMPRA',
-          compraId: compra.id,
-          empresaId,
-        },
-      });
-    }
-
-    return compra;
-  }
 }

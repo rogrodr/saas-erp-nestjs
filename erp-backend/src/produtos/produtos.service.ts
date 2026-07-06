@@ -15,12 +15,6 @@ export class ProdutosService {
     });
   }
 
-  criar(data: any, empresaId: number) {
-    return this.prisma.produto.create({
-      data: { ...data, empresaId },
-    });
-  }
-
   async atualizar(id: number, data: any, empresaId: number) {
     await this.verificarTenant(id, empresaId);
     return this.prisma.produto.update({ where: { id }, data });

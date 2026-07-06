@@ -15,12 +15,6 @@ export class ContasReceberService {
     });
   }
 
-  criar(data: any, empresaId: number) {
-    return this.prisma.contaReceber.create({
-      data: { ...data, empresaId },
-    });
-  }
-
   async receber(id: number, empresaId: number) {
     // ✅ valida que a conta pertence ao tenant antes de atualizar
     const conta = await this.prisma.contaReceber.findFirst({

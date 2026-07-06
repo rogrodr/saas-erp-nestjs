@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
 import { ContasPagarService } from './contas-pagar.service';
+import { CriarContaPagarDto } from './dto/criar-conta-pagar.dto';
 
 @Controller('contas-pagar')
 export class ContasPagarController {
@@ -11,7 +12,7 @@ export class ContasPagarController {
   }
 
   @Post()
-  criar(@Body() data: any, @Req() req: any) {
+  criar(@Body() data: CriarContaPagarDto, @Req() req: any) {
     return this.service.criar(data, req.user.empresaId);
   }
 

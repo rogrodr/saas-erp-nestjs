@@ -10,10 +10,4 @@ export class FornecedoresService {
       where: { empresaId },
     });
   }
-
-  criar(data: any, empresaId: number) {
-    return this.prisma.fornecedor.create({
-      data: { ...data, empresaId },
-    });
-  }
 }

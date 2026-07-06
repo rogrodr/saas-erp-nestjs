@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { VendasService } from './vendas.service';
+import { CriarVendaDto } from './dto/criar-venda.dto';
 
 @Controller('vendas')
 export class VendasController {
@@ -11,7 +12,7 @@ export class VendasController {
   }
 
   @Post()
-  criar(@Body() data: any, @Req() req: any) {
+  criar(@Body() data: CriarVendaDto, @Req() req: any) {
     return this.vendasService.criar(data, req.user.empresaId);
   }
 }

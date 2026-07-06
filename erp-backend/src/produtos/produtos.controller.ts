@@ -31,7 +31,7 @@ export class ProdutosController {
 
   @Post()
   @Roles(Role.Admin)
-  criar(@Body() data: any, @Req() req: any) {
+  criar(@Body() data: CriarProdutoDto, @Req() req: any) {
     return this.service.criar(data, req.user.empresaId);
   }
 

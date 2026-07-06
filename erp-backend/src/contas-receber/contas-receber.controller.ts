@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
 import { ContasReceberService } from './contas-receber.service';
+import { CriarContaReceberDto } from './dto/criar-conta-receber.dto';
 
 @Controller('contas-receber')
 export class ContasReceberController {
@@ -11,7 +12,7 @@ export class ContasReceberController {
   }
 
   @Post()
-  criar(@Body() data: any, @Req() req: any) {
+  criar(@Body() data: CriarContaReceberDto, @Req() req: any) {
     return this.service.criar(data, req.user.empresaId);
   }
 

@@ -17,37 +17,6 @@ export class VendasService {
     });
   }
 
-  async criar(data: any, empresaId: number) {
-    const venda = await this.prisma.venda.create({
-      data: { ...data, empresaId },
-      include: { itens: true },
-    });
-
-    for (const item of venda.itens) {
-      await this.prisma.historicoPreco.create({
-        data: {
-          produtoId: item.produtoId,
-          preco: item.preco,
-          tipo: 'VENDA',
-          vendaId: venda.id,
-          empresaId,
-        },
-      });
-    }
-
-    await this.prisma.contaReceber.create({
-      data: {
-        descricao: `Venda #${venda.id}`,
-        valor: venda.total,
-        vencimento: new Date(),
-        empresaId,
-        clienteId: venda.clienteId ?? null,
-        vendaId: venda.id,
-      },
-    });
-
-    return venda;
-  }
 
   async criar(data: CriarVendaDto, empresaId: number) {
     const { itens, ...vendaData } = data;
@@ -98,5 +67,22 @@ export class VendasService {
     }
 
     return venda;
+  }
+
+  async atualizar(id: number, data: CriarVendaDto, empresaId: number) {
+    await this.verificarTenant(id, empresaId);
+    const { itens, ...vendaData } = data;
+    return this.prisma.venda.update({
+      where: { id },
+      data: { ...vendaData, empresaId },
+      include: { itens: true },
+    });
+  }
+
+  private async verificarTenant(id: number, empresaId: number) {
+    const venda = await this.prisma.venda.findFirst({
+      where: { id, empresaId },
+    });
+    if (!venda) throw new NotFoundException('Venda não encontrada');
   }
 }

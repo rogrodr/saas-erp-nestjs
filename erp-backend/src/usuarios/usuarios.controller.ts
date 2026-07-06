@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { Roles, Role } from '../common/roles.decorator';
+import { CriarUsuarioDto } from './dto/criar-usuario.dto';
+import { AtualizarUsuarioDto } from './dto/atualizar-usuario.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -32,13 +34,17 @@ export class UsuariosController {
 
   @Post()
   @Roles(Role.Admin)
-  create(@Body() data: any, @Req() req: any) {
+  create(@Body() data: CriarUsuarioDto, @Req() req: any) {
     return this.usuariosService.create(data, req.user.empresaId);
   }
 
   @Patch(':id')
   @Roles(Role.Admin)
-  atualizar(@Param('id') id: string, @Body() data: any, @Req() req: any) {
+  atualizar(
+    @Param('id') id: string,
+    @Body() data: AtualizarUsuarioDto,
+    @Req() req: any,
+  ) {
     return this.usuariosService.atualizar(Number(id), data, req.user.empresaId);
   }
 

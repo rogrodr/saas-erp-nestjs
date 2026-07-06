@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { CriarUsuarioDto } from './dto/criar-usuario.dto';
+import { AtualizarUsuarioDto } from './dto/atualizar-usuario.dto';
+import { Role } from '../common/roles.decorator';
 
 const SELECT_SEGURO = {
   id: true,
@@ -23,10 +26,7 @@ export class UsuariosService {
     });
   }
 
-  async create(
-    data: { nome: string; email: string; senha: string; role?: string },
-    empresaId: number,
-  ) {
+  async create(data: CriarUsuarioDto, empresaId: number) {
     const senhaHash = await bcrypt.hash(data.senha, 10);
 
     return this.prisma.usuario.create({
@@ -34,18 +34,14 @@ export class UsuariosService {
         nome: data.nome,
         email: data.email,
         senha: senhaHash,
-        role: data.role ?? 'funcionario',
+        role: data.role ?? Role.Funcionario,
         empresaId,
       },
       select: SELECT_SEGURO,
     });
   }
 
-  async atualizar(
-    id: number,
-    data: { nome?: string; email?: string; senha?: string; role?: string },
-    empresaId: number,
-  ) {
+  async atualizar(id: number, data: AtualizarUsuarioDto, empresaId: number) {
     const usuario = await this.prisma.usuario.findFirst({
       where: { id, empresaId },
     });
@@ -72,6 +68,7 @@ export class UsuariosService {
       where: { id, empresaId },
     });
     if (!usuario) throw new NotFoundException('Usuário não encontrado');
+    
     return this.prisma.usuario.delete({ where: { id } });
   }
 }

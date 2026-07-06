@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { paginar } from '../common/paginacao.dto';
+import { CriarProdutoDto } from './dto/criar-produto.dto';
 
 @Injectable()
 export class ProdutosService {
@@ -35,5 +36,14 @@ export class ProdutosService {
       where: { id, empresaId },
     });
     if (!produto) throw new NotFoundException('Produto não encontrado');
+  }
+
+  async criar(data: CriarProdutoDto, empresaId: number) {
+    return this.prisma.produto.create({
+      data: {
+        ...data,
+        empresaId,
+      },
+    });
   }
 }

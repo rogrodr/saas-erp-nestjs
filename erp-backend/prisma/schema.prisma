@@ -6,6 +6,41 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  GERENTE
+  FUNCIONARIO
+}
+
+enum StatusUsuario {
+  ATIVO
+  INATIVO
+}
+
+enum StatusPedido {
+  PENDENTE
+  FATURADO
+  CANCELADO
+}
+
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+  AJUSTE
+}
+
+enum TipoPreco {
+  COMPRA
+  VENDA
+}
+
+enum AcaoAuditoria {
+  CRIAR
+  ATUALIZAR
+  DELETAR
+  ACESSO
+}
+
 model Empresa {
   id        Int      @id @default(autoincrement())
   nome      String
@@ -21,46 +56,78 @@ model Empresa {
   compras         Compra[]
   contasPagar     ContaPagar[]
   contasReceber   ContaReceber[]
+  movimentacoes   MovimentacaoEstoque[]
+  auditorias      Auditoria[]
 }
 
 model Usuario {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String   @unique
-  senha     String
-  role      String   @default("funcionario")
-  createdAt DateTime @default(now())
+  id                Int           @id @default(autoincrement())
+  nome              String
+  email             String        @unique
+  senha             String
+  role              Role          @default(FUNCIONARIO)
+  status            StatusUsuario @default(ATIVO)
+  
+  empresaId         Int
+  empresa           Empresa       @relation(fields: [empresaId], references: [id])
+  
+  resetToken        String?
+  resetTokenExpires DateTime?
+  
+  createdAt         DateTime      @default(now())
 
-  empresaId Int
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
+  movimentacoes     MovimentacaoEstoque[]
+  auditorias        Auditoria[]
 }
 
 model Cliente {
-  id       Int     @id @default(autoincrement())
-  nome     String
-  cpf      String? @unique
-  telefone String?
-  email    String?
-
-  endereco String?
-  numero   String?
-  bairro   String?
-  cidade   String?
-  estado   String?
-  cep      String?
-
+  id        Int     @id @default(autoincrement())
+  nome      String
+  cpf       String? @unique
+  
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
 
+  enderecos     EnderecoCliente[]
+  contatos      ContatoCliente[]
   vendas        Venda[]
   contasReceber ContaReceber[]
 }
 
+model EnderecoCliente {
+  id          Int     @id @default(autoincrement())
+  logradouro  String
+  numero      String?
+  bairro      String?
+  cidade      String?
+  estado      String?
+  cep         String?
+  principal   Boolean @default(true)
+  
+  clienteId   Int
+  cliente     Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+}
+
+model ContatoCliente {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  telefone  String?
+  email     String?
+  principal Boolean @default(true)
+  
+  clienteId Int
+  cliente   Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+}
+
 model Produto {
-  id      Int    @id @default(autoincrement())
-  nome    String
-  preco   Float
-  estoque Int
+  id         Int     @id @default(autoincrement())
+  nome       String
+  preco      Float
+  sku        String?
+  categoria  String?
+  estoque    Int     @default(0)
+  estoqueMin Int     @default(5) 
+  ativo      Boolean @default(true)
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -68,6 +135,7 @@ model Produto {
   vendaItems      VendaItem[]
   compraItems     CompraItem[]
   historicoPrecos HistoricoPreco[]
+  movimentacoes   MovimentacaoEstoque[]
 }
 
 model Fornecedor {
@@ -91,9 +159,11 @@ model Fornecedor {
 }
 
 model Venda {
-  id        Int      @id @default(autoincrement())
+  id        Int          @id @default(autoincrement())
   total     Float
-  createdAt DateTime @default(now())
+  status    StatusPedido @default(PENDENTE)
+  desconto  Float        @default(0.0)
+  createdAt DateTime     @default(now())
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -198,7 +268,35 @@ model HistoricoPreco {
   createdAt DateTime @default(now())
 }
 
-enum TipoPreco {
-  COMPRA
-  VENDA
+model MovimentacaoEstoque {
+  id         Int              @id @default(autoincrement())
+  tipo       TipoMovimentacao
+  quantidade Int
+  motivo     String?
+  createdAt  DateTime         @default(now())
+
+  produtoId Int
+  produto   Produto @relation(fields: [produtoId], references: [id])
+  
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+  
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model Auditoria {
+  id              Int           @id @default(autoincrement())
+  entidade        String
+  entidadeId      Int?
+  acao            AcaoAuditoria
+  dadosAnteriores Json?
+  dadosNovos      Json?
+  createdAt       DateTime      @default(now())
+
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
 }

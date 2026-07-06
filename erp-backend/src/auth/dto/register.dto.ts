@@ -1,15 +1,28 @@
-import { IsEmail, IsNotEmpty, IsNumber, MinLength } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsEnum, IsOptional, IsInt } from 'class-validator';
+import { Role, StatusUsuario } from '@prisma/client';
 
 export class RegisterDto {
-  @IsNotEmpty({ message: 'Nome é obrigatório' })
+  @IsString()
+  @IsNotEmpty()
   nome: string;
 
-  @IsEmail({}, { message: 'Email inválido' })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
-  @MinLength(6, { message: 'Senha deve ter no mínimo 6 caracteres' })
+  @IsString()
+  @IsNotEmpty()
   senha: string;
 
-  @IsNumber({}, { message: 'empresaId deve ser um número' })
+  @IsInt()
+  @IsNotEmpty()
   empresaId: number;
+
+  @IsOptional()
+  @IsEnum(Role)
+  role?: Role;
+
+  @IsOptional()
+  @IsEnum(StatusUsuario)
+  status?: StatusUsuario;
 }

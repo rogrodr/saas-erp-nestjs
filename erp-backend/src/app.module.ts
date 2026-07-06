@@ -16,9 +16,15 @@ import { ComprasModule } from './compras/compras.module';
 import { ContasPagarModule } from './contas-pagar/contas-pagar.module';
 import { ContasReceberModule } from './contas-receber/contas-receber.module';
 import { HistoricoPrecosModule } from './historico-precos/historico-precos.module';
+import { AuditoriaModule } from './auditoria/auditoria.module';
+import { EstoqueModule } from './estoque/estoque.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
+    AuditoriaModule,
+    EstoqueModule,
+    DashboardModule,
     PrismaModule,
     EmpresaModule,
     UsuariosModule,

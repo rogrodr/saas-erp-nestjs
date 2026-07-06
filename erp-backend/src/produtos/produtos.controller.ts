@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProdutosService } from './produtos.service';
 import { CriarProdutoDto } from './dto/criar-produto.dto';
+import { AtualizarProdutoDto } from './dto/atualizar-produto.dto';
 import { Roles, Role } from '../common/roles.decorator';
 
 @Controller('produtos')
@@ -38,7 +39,11 @@ export class ProdutosController {
 
   @Patch(':id')
   @Roles(Role.Admin)
-  atualizar(@Param('id') id: string, @Body() data: any, @Req() req: any) {
+  atualizar(
+    @Param('id') id: string,
+    @Body() data: AtualizarProdutoDto,
+    @Req() req: any,
+  ) {
     return this.service.atualizar(Number(id), data, req.user.empresaId);
   }
 

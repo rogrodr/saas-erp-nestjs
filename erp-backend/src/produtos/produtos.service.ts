@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { paginar } from '../common/paginacao.dto';
 import { CriarProdutoDto } from './dto/criar-produto.dto';
+import { AtualizarProdutoDto } from './dto/atualizar-produto.dto';
 
 @Injectable()
 export class ProdutosService {
@@ -15,7 +16,7 @@ export class ProdutosService {
     });
   }
 
-  async atualizar(id: number, data: any, empresaId: number) {
+  async atualizar(id: number, data: AtualizarProdutoDto, empresaId: number) {
     await this.verificarTenant(id, empresaId);
 
     const updateData = {

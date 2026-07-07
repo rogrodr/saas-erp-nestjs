@@ -1,0 +1,83 @@
+.layout-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f7fb;
+}
+
+.sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, #071b2f 0%, #12324f 100%);
+  color: white;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #0f6cbd;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.menu a {
+  color: #dce8f4;
+  text-decoration: none;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.menu a.active,
+.menu a:hover {
+  background: rgba(255,255,255,0.12);
+  color: white;
+}
+
+.sidebar-footer {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.16);
+  padding-top: 1rem;
+}
+
+.user-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e3eaf2;
+  background: white;
+}
+
+.page-content {
+  padding: 2rem;
+}

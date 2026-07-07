@@ -1,0 +1,39 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.hero-card,
+.summary-card {
+  background: white;
+  border: 1px solid #dfe8f2;
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: 0 10px 30px rgba(15, 39, 67, 0.06);
+}
+
+.hero-card {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #0f6cbd 0%, #0d3151 100%);
+  color: white;
+}
+
+.hero-card p,
+.summary-card span {
+  color: #6e8398;
+}
+
+.hero-card p {
+  color: #e6f1fb;
+}
+
+.summary-card h4 {
+  margin: 0 0 0.4rem;
+}
+
+.summary-card p {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}

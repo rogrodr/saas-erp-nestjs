@@ -15,6 +15,14 @@ export interface RegisterPayload {
   empresaId: number;
 }
 
+export interface RegistrarEmpresaPayload {
+  nomeEmpresa: string;
+  cnpj?: string;
+  nome: string;
+  email: string;
+  senha: string;
+}
+
 export interface AuthResponse {
   token: string;
   refreshToken: string;
@@ -38,6 +46,12 @@ export class AuthService {
 
   async register(payload: RegisterPayload): Promise<void> {
     await firstValueFrom(this.http.post(`${environment.apiUrl}/auth/register`, payload));
+  }
+
+  async registrarComEmpresa(payload: RegistrarEmpresaPayload): Promise<void> {
+    await firstValueFrom(
+      this.http.post(`${environment.apiUrl}/auth/register-empresa`, payload)
+    );
   }
 
   logout(): void {

@@ -39,11 +39,17 @@ export class RegisterComponent {
     private readonly router: Router
   ) {
     this.form = this.fb.group({
+      nomeEmpresa: ['', [Validators.required]],
+      cnpj: [''],
       nome: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
-      empresaId: [1, [Validators.required]],
     });
+  }
+
+  campoInvalido(nome: string): boolean {
+    const controle = this.form.get(nome);
+    return !!controle && controle.invalid && (controle.dirty || controle.touched);
   }
 
   async submit(): Promise<void> {
@@ -57,14 +63,16 @@ export class RegisterComponent {
     this.errorMessage = '';
 
     try {
-      await this.authService.register(this.form.value);
+      await this.authService.registrarComEmpresa(this.form.value);
       this.successMessage = 'Cadastro realizado com sucesso. Você já pode entrar.';
       setTimeout(() => this.router.navigate(['/login']), 1200);
     } catch (error: any) {
       if (error.status === 500) {
         this.errorMessage = 'Erro no servidor. Verifique se o backend está ativo em http://localhost:3000';
       } else if (error.error?.message) {
-        this.errorMessage = error.error.message;
+        this.errorMessage = Array.isArray(error.error.message)
+          ? error.error.message.join(', ')
+          : error.error.message;
       } else {
         this.errorMessage = 'Não foi possível concluir o cadastro. Tente novamente.';
       }

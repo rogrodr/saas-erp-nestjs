@@ -13,24 +13,40 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
       <div class="field">
+        <label for="nomeEmpresa">Nome da empresa</label>
+        <input pInputText id="nomeEmpresa" formControlName="nomeEmpresa" placeholder="Nome da sua empresa" />
+        <small class="field-error" *ngIf="campoInvalido('nomeEmpresa')">
+          Informe o nome da empresa.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="cnpj">CNPJ (opcional)</label>
+        <input pInputText id="cnpj" formControlName="cnpj" placeholder="00.000.000/0000-00" />
+      </div>
+
+      <div class="field">
         <label for="nome">Nome completo</label>
         <input pInputText id="nome" formControlName="nome" placeholder="Seu nome" />
+        <small class="field-error" *ngIf="campoInvalido('nome')">
+          Informe seu nome.
+        </small>
       </div>
 
       <div class="field">
         <label for="email">E-mail corporativo</label>
         <input pInputText id="email" formControlName="email" placeholder="seu@email.com" />
+        <small class="field-error" *ngIf="campoInvalido('email')">
+          Informe um e-mail válido.
+        </small>
       </div>
 
       <div class="field">
         <label for="senha">Senha</label>
         <p-password id="senha" formControlName="senha" [feedback]="false" [toggleMask]="true" placeholder="Crie uma senha" styleClass="w-full"></p-password>
-      </div>
-
-      <div class="field">
-        <label for="empresaId">ID da empresa</label>
-        <input pInputText id="empresaId" formControlName="empresaId" type="number" />
-        <small class="hint">Informe o identificador da empresa vinculada ao cadastro.</small>
+        <small class="field-error" *ngIf="campoInvalido('senha')">
+          A senha deve ter no mínimo 6 caracteres.
+        </small>
       </div>
 
       <div class="message-stack">

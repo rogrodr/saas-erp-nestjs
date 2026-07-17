@@ -10,12 +10,12 @@
   --color-ink-300: #c9cddb;
   --color-ink-100: #eef0f5;
 
-  /* Azul: substitui o roxo da referência como cor de destaque */
-  --color-brand-700: #1d4ed8;
-  --color-brand-600: #2563eb;
-  --color-brand-500: #3b82f6;
-  --color-brand-100: #dbeafe;
-  --color-brand-50: #eff6ff;
+  /* Preto/cinza: cor de destaque no lugar do azul */
+  --color-brand-700: #0a0c10;
+  --color-brand-600: #16181d;
+  --color-brand-500: #33363d;
+  --color-brand-100: #e4e5e8;
+  --color-brand-50: #f2f2f3;
 }
 
 html,

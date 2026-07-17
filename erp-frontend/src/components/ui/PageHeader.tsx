@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Plus } from 'lucide-react';
-import { classesBotaoPrimario } from '../../lib/estilos';
+import { classesBotaoAdicionar } from '../../lib/estilos';
 
 interface PageHeaderProps {
   titulo: string;
@@ -20,7 +20,7 @@ export function PageHeader({ titulo, subtitulo, rotuloAcao, aoClicarAcao, acaoEx
       <div className="flex items-center gap-2">
         {acaoExtra}
         {rotuloAcao && aoClicarAcao && (
-          <button onClick={aoClicarAcao} className={classesBotaoPrimario}>
+          <button onClick={aoClicarAcao} className={classesBotaoAdicionar}>
             <Plus size={16} />
             {rotuloAcao}
           </button>

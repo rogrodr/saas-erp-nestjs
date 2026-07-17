@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Layers, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { api } from '../lib/api';
+import { AuthLayout } from '../components/layout/AuthLayout';
+import { classesBotaoPrimario, classesCampo, classesRotulo } from '../lib/estilos';
 
 interface FormularioCadastro {
   nomeEmpresa: string;
@@ -59,124 +61,114 @@ export function Cadastro() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f4f6fb] px-4 py-10">
-      <div className="w-full max-w-md rounded-xl border border-ink-100 bg-white p-8 shadow-sm">
-        <div className="mb-6 flex flex-col items-center gap-2">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-600">
-            <Layers size={22} className="text-white" />
+    <AuthLayout largura="md">
+      <h1 className="mb-1 text-2xl font-semibold text-ink-900 md:hidden">
+        <span className="text-ink-900">RSON</span> <span className="text-ink-500">ERP</span>
+      </h1>
+      <h2 className="text-lg font-semibold text-ink-900">Criar conta</h2>
+      <p className="mb-6 text-sm text-ink-500">Cadastre sua empresa e crie o usuário administrador</p>
+
+      <form onSubmit={aoSubmeter} className="flex flex-col gap-4">
+        <fieldset className="flex flex-col gap-4">
+          <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-500">
+            Dados da empresa
+          </legend>
+
+          <div className="flex flex-col gap-1.5">
+            <label className={classesRotulo}>Nome da empresa</label>
+            <input
+              type="text"
+              required
+              value={formulario.nomeEmpresa}
+              onChange={(evento) => atualizarCampo('nomeEmpresa', evento.target.value)}
+              className={classesCampo}
+              placeholder="Minha Empresa Ltda"
+            />
           </div>
-          <h1 className="text-lg font-semibold text-ink-900">Criar conta no Meu ERP</h1>
-          <p className="text-center text-sm text-ink-500">
-            Cadastre sua empresa e crie o usuário administrador
-          </p>
-        </div>
 
-        <form onSubmit={aoSubmeter} className="flex flex-col gap-4">
-          <fieldset className="flex flex-col gap-4">
-            <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-500">
-              Dados da empresa
-            </legend>
+          <div className="flex flex-col gap-1.5">
+            <label className={classesRotulo}>CNPJ (opcional)</label>
+            <input
+              type="text"
+              value={formulario.cnpj}
+              onChange={(evento) => atualizarCampo('cnpj', evento.target.value)}
+              className={classesCampo}
+              placeholder="00.000.000/0001-00"
+            />
+          </div>
+        </fieldset>
 
+        <fieldset className="flex flex-col gap-4 border-t border-ink-100 pt-4">
+          <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-500">
+            Usuário administrador
+          </legend>
+
+          <div className="flex flex-col gap-1.5">
+            <label className={classesRotulo}>Seu nome</label>
+            <input
+              type="text"
+              required
+              value={formulario.nome}
+              onChange={(evento) => atualizarCampo('nome', evento.target.value)}
+              className={classesCampo}
+              placeholder="Seu nome completo"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className={classesRotulo}>E-mail</label>
+            <input
+              type="email"
+              required
+              value={formulario.email}
+              onChange={(evento) => atualizarCampo('email', evento.target.value)}
+              className={classesCampo}
+              placeholder="voce@empresa.com"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-ink-700">Nome da empresa</label>
+              <label className={classesRotulo}>Senha</label>
               <input
-                type="text"
+                type="password"
                 required
-                value={formulario.nomeEmpresa}
-                onChange={(evento) => atualizarCampo('nomeEmpresa', evento.target.value)}
-                className="rounded-lg border border-ink-100 px-3 py-2 text-sm text-ink-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-                placeholder="Minha Empresa Ltda"
+                minLength={6}
+                value={formulario.senha}
+                onChange={(evento) => atualizarCampo('senha', evento.target.value)}
+                className={classesCampo}
+                placeholder="Mínimo 6 caracteres"
               />
             </div>
-
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-ink-700">CNPJ (opcional)</label>
+              <label className={classesRotulo}>Confirmar senha</label>
               <input
-                type="text"
-                value={formulario.cnpj}
-                onChange={(evento) => atualizarCampo('cnpj', evento.target.value)}
-                className="rounded-lg border border-ink-100 px-3 py-2 text-sm text-ink-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-                placeholder="00.000.000/0001-00"
-              />
-            </div>
-          </fieldset>
-
-          <fieldset className="flex flex-col gap-4 border-t border-ink-100 pt-4">
-            <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-500">
-              Usuário administrador
-            </legend>
-
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-ink-700">Seu nome</label>
-              <input
-                type="text"
+                type="password"
                 required
-                value={formulario.nome}
-                onChange={(evento) => atualizarCampo('nome', evento.target.value)}
-                className="rounded-lg border border-ink-100 px-3 py-2 text-sm text-ink-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-                placeholder="Seu nome completo"
+                minLength={6}
+                value={formulario.confirmarSenha}
+                onChange={(evento) => atualizarCampo('confirmarSenha', evento.target.value)}
+                className={classesCampo}
+                placeholder="Repita a senha"
               />
             </div>
+          </div>
+        </fieldset>
 
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-ink-700">E-mail</label>
-              <input
-                type="email"
-                required
-                value={formulario.email}
-                onChange={(evento) => atualizarCampo('email', evento.target.value)}
-                className="rounded-lg border border-ink-100 px-3 py-2 text-sm text-ink-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-                placeholder="voce@empresa.com"
-              />
-            </div>
+        {erro && <p className="text-sm text-red-500">{erro}</p>}
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-ink-700">Senha</label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  value={formulario.senha}
-                  onChange={(evento) => atualizarCampo('senha', evento.target.value)}
-                  className="rounded-lg border border-ink-100 px-3 py-2 text-sm text-ink-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-                  placeholder="Mínimo 6 caracteres"
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-ink-700">Confirmar senha</label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  value={formulario.confirmarSenha}
-                  onChange={(evento) => atualizarCampo('confirmarSenha', evento.target.value)}
-                  className="rounded-lg border border-ink-100 px-3 py-2 text-sm text-ink-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-                  placeholder="Repita a senha"
-                />
-              </div>
-            </div>
-          </fieldset>
+        <button type="submit" disabled={carregando} className={`mt-2 ${classesBotaoPrimario}`}>
+          {carregando && <Loader2 size={16} className="animate-spin" />}
+          Criar empresa e conta
+        </button>
 
-          {erro && <p className="text-sm text-red-500">{erro}</p>}
-
-          <button
-            type="submit"
-            disabled={carregando}
-            className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
-          >
-            {carregando && <Loader2 size={16} className="animate-spin" />}
-            Criar empresa e conta
-          </button>
-
-          <p className="text-center text-sm text-ink-500">
-            Já tem uma conta?{' '}
-            <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700">
-              Entrar
-            </Link>
-          </p>
-        </form>
-      </div>
-    </div>
+        <p className="text-center text-sm text-ink-500">
+          Já tem uma conta?{' '}
+          <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700">
+            Entrar
+          </Link>
+        </p>
+      </form>
+    </AuthLayout>
   );
 }

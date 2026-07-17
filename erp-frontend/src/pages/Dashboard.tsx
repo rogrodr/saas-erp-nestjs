@@ -96,8 +96,8 @@ export function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef0f5" vertical={false} />
                 <XAxis dataKey="nome" tick={{ fontSize: 12, fill: '#8b91a5' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: '#8b91a5' }} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: '#eff6ff' }} />
-                <Bar dataKey="quantidade" fill="#2563eb" radius={[6, 6, 0, 0]} />
+                <Tooltip cursor={{ fill: '#f2f2f3' }} />
+                <Bar dataKey="quantidade" fill="#16181d" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}

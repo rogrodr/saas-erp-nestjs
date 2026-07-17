@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+
+  /* Escala de cinzas usada em texto, ícones e bordas */
+  --color-ink-900: #1f2430;
+  --color-ink-700: #4b5165;
+  --color-ink-500: #8b91a5;
+  --color-ink-300: #c9cddb;
+  --color-ink-100: #eef0f5;
+
+  /* Azul: substitui o roxo da referência como cor de destaque */
+  --color-brand-700: #1d4ed8;
+  --color-brand-600: #2563eb;
+  --color-brand-500: #3b82f6;
+  --color-brand-100: #dbeafe;
+  --color-brand-50: #eff6ff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #f4f6fb;
+  color: var(--color-ink-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-300);
+  border-radius: 999px;
+}

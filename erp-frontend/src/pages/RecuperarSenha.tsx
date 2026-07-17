@@ -67,9 +67,7 @@ export function RecuperarSenha() {
 
       <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
         <strong className="font-semibold">Aviso:</strong> o envio de e-mail ainda é simulado no backend (o
-        código aparece só no console do servidor, não chega numa caixa de entrada real). Antes de colocar
-        isso em produção, configure um provedor de e-mail de verdade (Resend, SendGrid, SMTP, etc.) no
-        backend — senão ninguém vai conseguir recuperar a senha fora do ambiente de desenvolvimento.
+        código aparece só no console do servidor, não chega numa caixa de entrada real). 
       </div>
 
       <form onSubmit={aoSolicitar} className="flex flex-col gap-3">

@@ -27,7 +27,7 @@ export function Sidebar({ recolhida, aoAlternar }: SidebarProps) {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600">
               <Layers size={18} className="text-white" />
             </div>
-            <span className="text-[15px] font-semibold text-ink-900">Meu ERP</span>
+            <span className="text-[15px] font-semibold text-ink-900">RSON ERP</span>
           </div>
         )}
         {recolhida && (

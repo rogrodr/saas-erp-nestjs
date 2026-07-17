@@ -5,6 +5,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { SolicitarRecuperacaoDto } from './dto/solicitar-recuperacao.dto';
 import { RedefinirSenhaDto } from './dto/redefinir-senha.dto';
+import { RegistrarEmpresaDto } from './dto/registrar-empresa.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,12 @@ export class AuthController {
   @Post('register')
   register(@Body() body: RegisterDto) {
     return this.authService.register(body);
+  }
+
+  @Public()
+  @Post('register-empresa')
+  registrarComEmpresa(@Body() body: RegistrarEmpresaDto) {
+    return this.authService.registrarComEmpresa(body);
   }
 
   @Public()

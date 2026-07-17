@@ -20,7 +20,14 @@ export function AuthLayout({ children, largura = 'sm' }: AuthLayoutProps) {
       </div>
 
       <div className="flex w-full flex-col items-center justify-center bg-white px-4 py-10 md:w-1/2">
-        <div className={`w-full ${larguras[largura]}`}>{children}</div>
+        <div className={`w-full ${larguras[largura]}`}>
+          <div className="mb-5 rounded-lg border border-ink-100 bg-ink-100/40 p-3 text-xs text-ink-700">
+            Este é um projeto de demonstração hospedado em servidor gratuito — a primeira requisição pode
+            levar até <strong className="font-semibold">50 segundos</strong> enquanto o servidor "acorda".
+            Aguarde, não é um erro.
+          </div>
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -26,6 +26,7 @@ import { RelatoriosModule } from './relatorios/relatorios.module';
     AuditoriaModule,
     EstoqueModule,
     DashboardModule,
+    RelatoriosModule,
     PrismaModule,
     EmpresaModule,
     UsuariosModule,
@@ -38,7 +39,6 @@ import { RelatoriosModule } from './relatorios/relatorios.module';
     ContasPagarModule,
     ContasReceberModule,
     HistoricoPrecosModule,
-    RelatoriosModule,
   ],
   controllers: [AppController],
   providers: [

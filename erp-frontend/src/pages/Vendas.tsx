@@ -8,11 +8,8 @@ import { useRecurso, extrairMensagemErro } from '../lib/hooks/useRecurso';
 import { classesBotaoPrimario, classesBotaoSecundario, classesCampo, classesRotulo } from '../lib/estilos';
 import { formatadorMoeda } from '../lib/formatadores';
 
-// O enum de status do pedido (StatusPedido) não veio no código-fonte do backend
-// (não havia prisma/schema.prisma no zip enviado). As opções abaixo são um palpite
-// com base no que o VendasService usa ('FATURADO') — confirme os valores exatos
-// no seu schema.prisma e ajuste esta lista se necessário.
-type StatusPedido = 'ABERTO' | 'FATURADO' | 'CANCELADO';
+
+type StatusPedido = 'PENDENTE' | 'FATURADO' | 'CANCELADO';
 
 interface Produto {
   id: number;
@@ -36,7 +33,7 @@ interface Venda {
 }
 
 const tonsStatus: Record<StatusPedido, 'verde' | 'ambar' | 'vermelho'> = {
-  ABERTO: 'ambar',
+  PENDENTE: 'ambar',
   FATURADO: 'verde',
   CANCELADO: 'vermelho',
 };
@@ -49,7 +46,7 @@ export function Vendas() {
   const [modalAberto, setModalAberto] = useState(false);
   const [clienteId, setClienteId] = useState('');
   const [desconto, setDesconto] = useState('');
-  const [status, setStatus] = useState<StatusPedido>('ABERTO');
+  const [status, setStatus] = useState<StatusPedido>('PENDENTE');
   const [itensPedido, setItensPedido] = useState<ItemPedido[]>([{ produtoId: '', quantidade: '1', preco: '' }]);
   const [erroFormulario, setErroFormulario] = useState<string | null>(null);
   const [salvando, setSalvando] = useState(false);
@@ -62,7 +59,7 @@ export function Vendas() {
   function resetarFormulario() {
     setClienteId('');
     setDesconto('');
-    setStatus('ABERTO');
+    setStatus('PENDENTE');
     setItensPedido([{ produtoId: '', quantidade: '1', preco: '' }]);
     setErroFormulario(null);
   }
@@ -144,7 +141,7 @@ export function Vendas() {
             <div className="flex flex-col gap-1.5">
               <label className={classesRotulo}>Status</label>
               <select className={classesCampo} value={status} onChange={(e) => setStatus(e.target.value as StatusPedido)}>
-                <option value="ABERTO">Aberto</option>
+                <option value="PENDENTE">Pendente</option>
                 <option value="FATURADO">Faturado</option>
                 <option value="CANCELADO">Cancelado</option>
               </select>

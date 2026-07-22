@@ -12,6 +12,7 @@ import {
   Building2,
   ScrollText,
   LineChart,
+  FileBarChart,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -32,6 +33,7 @@ export const itensNavegacao: ItemNavegacao[] = [
   { rotulo: 'Fornecedores', caminho: '/fornecedores', icone: Truck },
   { rotulo: 'Contas a Receber', caminho: '/contas-receber', icone: Wallet },
   { rotulo: 'Contas a Pagar', caminho: '/contas-pagar', icone: CreditCard },
+  { rotulo: 'Relatório Financeiro', caminho: '/relatorios/financeiro', icone: FileBarChart },
   { rotulo: 'Usuários', caminho: '/usuarios', icone: UserCog },
   { rotulo: 'Empresa', caminho: '/empresa', icone: Building2 },
   { rotulo: 'Auditoria', caminho: '/auditoria', icone: ScrollText },

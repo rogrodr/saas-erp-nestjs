@@ -19,6 +19,7 @@ import { HistoricoPrecosModule } from './historico-precos/historico-precos.modul
 import { AuditoriaModule } from './auditoria/auditoria.module';
 import { EstoqueModule } from './estoque/estoque.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { RelatoriosModule } from './relatorios/relatorios.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     ContasPagarModule,
     ContasReceberModule,
     HistoricoPrecosModule,
+    RelatoriosModule,
   ],
   controllers: [AppController],
   providers: [

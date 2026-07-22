@@ -1,14 +1,25 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { PageHeader } from '../components/ui/PageHeader';
 import { DataTable, type ColunaTabela } from '../components/DataTable/DataTable';
+import { Badge } from '../components/ui/Badge';
 import { classesBotaoPrimario, classesBotaoSecundario, classesCampo, classesRotulo } from '../lib/estilos';
 import { formatarData } from '../lib/formatadores';
 import { api } from '../lib/api';
 import { extrairMensagemErro } from '../lib/hooks/useRecurso';
 
+
+type AcaoAuditoria = 'CRIAR' | 'ATUALIZAR' | 'DELETAR' | 'ACESSO';
+
+const tonsAcao: Record<AcaoAuditoria, 'verde' | 'azul' | 'vermelho' | 'cinza'> = {
+  CRIAR: 'verde',
+  ATUALIZAR: 'azul',
+  DELETAR: 'vermelho',
+  ACESSO: 'cinza',
+};
+
 interface Auditoria {
   id: number;
-  acao: string;
+  acao: AcaoAuditoria;
   entidade: string;
   entidadeId?: number;
   createdAt: string;
@@ -20,7 +31,7 @@ export function Auditoria() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const [entidade, setEntidade] = useState('');
-  const [acao, setAcao] = useState('');
+  const [acao, setAcao] = useState<AcaoAuditoria | ''>('');
 
   async function buscar(filtros?: { entidade?: string; acao?: string }) {
     setCarregando(true);
@@ -56,7 +67,7 @@ export function Auditoria() {
   const colunas: ColunaTabela<Auditoria>[] = [
     { cabecalho: 'Data', render: (item) => formatarData(item.createdAt) },
     { cabecalho: 'Usuário', render: (item) => item.usuario?.nome ?? item.usuario?.email ?? '—' },
-    { cabecalho: 'Ação', render: (item) => item.acao },
+    { cabecalho: 'Ação', render: (item) => <Badge texto={item.acao} tom={tonsAcao[item.acao] ?? 'cinza'} /> },
     { cabecalho: 'Entidade', render: (item) => item.entidade },
     { cabecalho: 'ID do registro', render: (item) => item.entidadeId ?? '—' },
   ];
@@ -77,7 +88,13 @@ export function Auditoria() {
         </div>
         <div className="flex flex-col gap-1.5">
           <label className={classesRotulo}>Ação</label>
-          <input className={`${classesCampo} w-48`} placeholder="ex: CRIAR, ATUALIZAR" value={acao} onChange={(e) => setAcao(e.target.value)} />
+          <select className={`${classesCampo} w-48`} value={acao} onChange={(e) => setAcao(e.target.value as AcaoAuditoria | '')}>
+            <option value="">Todas</option>
+            <option value="CRIAR">Criar</option>
+            <option value="ATUALIZAR">Atualizar</option>
+            <option value="DELETAR">Deletar</option>
+            <option value="ACESSO">Acesso</option>
+          </select>
         </div>
         <button type="submit" className={classesBotaoPrimario}>
           Filtrar

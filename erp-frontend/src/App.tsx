@@ -18,6 +18,7 @@ import { Usuarios } from './pages/Usuarios';
 import { Empresa } from './pages/Empresa';
 import { Auditoria } from './pages/Auditoria';
 import { HistoricoPrecos } from './pages/HistoricoPrecos';
+import { RelatorioFinanceiro } from './pages/RelatorioFinanceiro';
 
 export default function App() {
   return (
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/empresa" element={<Empresa />} />
             <Route path="/auditoria" element={<Auditoria />} />
             <Route path="/historico-precos" element={<HistoricoPrecos />} />
+            <Route path="/relatorios/financeiro" element={<RelatorioFinanceiro />} />
           </Route>
         </Routes>
       </AuthProvider>

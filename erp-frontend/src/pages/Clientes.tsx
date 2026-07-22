@@ -104,8 +104,7 @@ export function Clientes() {
     setErroFormulario(null);
     try {
       if (clienteEditando) {
-        // A atualização no backend não suporta reescrever endereços/contatos aninhados,
-        // então aqui só reenviamos os dados básicos do cliente.
+
         await atualizar(clienteEditando.id, { nome: formulario.nome, cpf: formulario.cpf || undefined });
       } else {
         const enderecos = formulario.logradouro

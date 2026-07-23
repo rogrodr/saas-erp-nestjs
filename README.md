@@ -80,6 +80,15 @@ npm run dev
 
 O frontend sobe em `http://localhost:5173`.
 
+
+### Lições Aprendidas
+
+Alguns problemas reais enfrentados ao colocar o projeto em produção, e como foram resolvidos — deixados aqui porque diagnosticar isso ensinou mais sobre deploy do que qualquer tutorial:
+
+Supabase + Render e IPv6: a connection string "Direct connection" do Supabase resolve para um endereço IPv6, mas o Render (no plano usado) só tem saída IPv4 — resultando em ENETUNREACH. Resolvido trocando para a connection string do Session Pooler do Supabase (IPv4).
+nest start em produção estoura memória: o Start Command do Render estava configurado para yarn start, que roda nest start — esse comando recompila TypeScript em tempo de execução (via webpack), consumindo bem mais RAM do que apenas executar o JavaScript já compilado. No plano gratuito (RAM limitada), isso causava JavaScript heap out of memory e um loop de crash silencioso. Corrigido trocando o Start Command para yarn start:prod (node dist/main).
+tsconfig.build.json sobrescreve tsconfig.json: ao mudar para start:prod, um novo erro surgiu (Cannot find module dist/main) porque um arquivo na raiz do projeto (prisma.config.ts) fazia o TypeScript colocar a saída em dist/src/main.js em vez de dist/main.js. A causa raiz: arrays como exclude não se combinam quando um tsconfig estende outro via extends — o tsconfig.build.json tinha seu próprio exclude, que sobrescrevia completamente o do tsconfig.json pai. Corrigido adicionando rootDir e ajustando o exclude no arquivo correto (tsconfig.build.json).
+
 ## Licença
 
 Projeto de portfólio pessoal — sem licença de uso comercial definida.
